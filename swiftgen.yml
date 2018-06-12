@@ -1,0 +1,13 @@
+input_dir: MINQ
+output_dir: Generated
+xcassets:
+  paths:
+  - Colors.xcassets
+  - Images.xcassets
+  templateName: swift4
+  output: MINQAssets.swift
+storyboards:
+  paths:
+  - Scene/
+  templateName: swift4
+  output: MINQStoryboards.swift

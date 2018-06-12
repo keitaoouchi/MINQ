@@ -1,0 +1,14 @@
+disabled_rules:
+  - force_cast
+  - identifier_name
+  - force_try
+  - todo
+line_length: 150
+excluded:
+  - Pods
+  - Carthage
+  - fastlane
+  - MINQ/Generated
+included:
+  - MINQ
+reporter: "xcode"

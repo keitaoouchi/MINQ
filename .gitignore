@@ -1,0 +1,9 @@
+/build/*
+xcuserdata/
+Pods/
+Carthage/
+Generated/*.swift
+fastlane/report.xml
+config/*
+!config/.keep
+!config/*.template

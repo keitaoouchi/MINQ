@@ -1,0 +1,3 @@
+protocol Startable {
+  func start()
+}

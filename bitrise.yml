@@ -1,0 +1,72 @@
+format_version: "4"
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ios
+app:
+  envs:
+  - BITRISE_PROJECT_PATH: MINQ.xcworkspace
+  - BITRISE_SCHEME: MINQ-Debug
+trigger_map:
+- pull_request_source_branch: '*'
+  pull_request_target_branch: 'master'
+  workflow: ci
+- push_branch: "*"
+  workflow: ci
+
+workflows:
+
+  ci:
+    before_run:
+    - local
+
+  local:
+    before_run:
+    - _common
+    steps:
+    - xcode-test:
+        inputs:
+        - project_path: $BITRISE_PROJECT_PATH
+        - scheme: $BITRISE_SCHEME
+        - simulator_device: iPhone X
+        - is_clean_build: 'no'
+        - export_uitest_artifacts: 'false'
+        - should_retry_test_on_fail: 'yes'
+    - deploy-to-bitrise-io:
+        run_if: .IsCI
+    - cache-push:
+        is_always_run: true
+        inputs:
+        - cache_paths: |-
+            $BITRISE_CACHE_DIR
+            ./Cartfile.resolved
+            ./Carthage -> ./Cartfile.resolved
+
+  _common:
+    steps:
+    - activate-ssh-key:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone: {}
+    - cache-pull: {}
+    - certificate-and-profile-installer: {}
+    - script:
+        run_if: .IsCI
+        title: "Dummy .env"
+        inputs:
+        - content: "cp $BITRISE_SOURCE_DIR/.env.template $BITRISE_SOURCE_DIR/.env"
+    - script:
+        run_if: .IsCI
+        title: "Dummy Secrets.h"
+        inputs:
+        - content: "cp $BITRISE_SOURCE_DIR/config/Secrets.h.template $BITRISE_SOURCE_DIR/config/Secrets.h"
+    - script:
+        run_if: .IsCI
+        title: "Dummy GoogleService-Info.plist"
+        inputs:
+        - content: "cp $BITRISE_SOURCE_DIR/config/GoogleService-Info.plist.template $BITRISE_SOURCE_DIR/config/GoogleService-Info.plist"
+    - script:
+        title: "bundle install"
+        inputs:
+        - content: 'bundle install --jobs 5 --retry 2 --quiet'
+    - script:
+        title: "setup by fastlane"
+        inputs:
+        - content: 'bundle exec fastlane setup'

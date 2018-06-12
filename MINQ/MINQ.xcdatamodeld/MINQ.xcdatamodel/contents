@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14133" systemVersion="17E202" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ItemRecord" representedClassName="ItemRecord" isAbstract="YES" syncable="YES">
+        <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="commentsCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isPrivate" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="likesCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="readAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updatedAt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TagRecord" inverseName="item_" inverseEntity="TagRecord" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserRecord" inverseName="item_" inverseEntity="UserRecord" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="id"/>
+        </userInfo>
+    </entity>
+    <entity name="TagRecord" representedClassName="TagRecord" isAbstract="YES" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="item_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemRecord" inverseName="tags" inverseEntity="ItemRecord" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="name"/>
+        </userInfo>
+    </entity>
+    <entity name="UserRecord" representedClassName="UserRecord" syncable="YES">
+        <attribute name="facebookId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="followeesCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="followersCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="githubLoginName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemsCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="linkedinId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="organization" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profile" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profileImageUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="twitterScreenName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="wesiteUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="item_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemRecord" inverseName="user" inverseEntity="ItemRecord" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="id"/>
+        </userInfo>
+    </entity>
+    <elements>
+        <element name="ItemRecord" positionX="-63" positionY="-18" width="128" height="225"/>
+        <element name="TagRecord" positionX="-54" positionY="-9" width="128" height="73"/>
+        <element name="UserRecord" positionX="-36" positionY="9" width="128" height="268"/>
+    </elements>
+</model>

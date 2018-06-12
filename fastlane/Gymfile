@@ -1,0 +1,6 @@
+scheme "MINQ-Debug"
+workspace "MINQ.xcworkspace"
+clean true
+silent true
+export_options(compileBitcode: false, uploadBitcode: false)
+include_bitcode false
