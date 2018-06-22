@@ -7,8 +7,10 @@ body: Fabric: Copyright 20…
 version: 3.10.2
 
 name: Defaults, nameSpecified: 
-body: Licensed under the *…
-version: 0.0.1
+body: MIT License
+
+Copyrig…
+version: 0.2.2
 
 name: Fabric, nameSpecified: 
 body: Fabric: Copyright 20…
@@ -16,7 +18,7 @@ version: 1.7.7
 
 name: Firebase, nameSpecified: 
 body: Copyright 2018 Googl…
-version: 5.2.0
+version: 5.3.0
 
 name: FirebaseAnalytics, nameSpecified: 
 body: Copyright 2018 Googl…
@@ -25,15 +27,15 @@ version: 5.0.1
 name: FirebaseCore, nameSpecified: 
 body: 
                    …
-version: 5.0.3
+version: 5.0.4
 
 name: FirebaseInstanceID, nameSpecified: 
 body: Copyright 2018 Googl…
-version: 3.1.0
+version: 3.1.1
 
 name: FirebasePerformance, nameSpecified: 
 body: Copyright 2018 Googl…
-version: 2.0.0
+version: 2.0.1
 
 name: FirebaseSwizzlingUtilities, nameSpecified: 
 body: Copyright 2018 Googl…
@@ -151,7 +153,7 @@ name: PagingMenuController, nameSpecified: , owner: kitasuke, version: 2.2.0
 
 name: Quick, nameSpecified: , owner: Quick, version: v1.3.0
 
-name: realm-cocoa, nameSpecified: , owner: realm, version: v3.7.1
+name: realm-cocoa, nameSpecified: , owner: realm, version: v3.7.4
 
 add-version-numbers: false
 

@@ -38,9 +38,8 @@ extension AppRootViewController {
   }
 
   private func onRestart() {
-    let vc = UIViewController()
-    LoadingStateView.fill(in: vc.view)
-    self.minq.fill(with: vc)
+    let launchScreen = StoryboardScene.LaunchScreen.initialScene.instantiate()
+    self.minq.fill(with: launchScreen)
     AnalyticsService.log(event: .reset)
   }
 }

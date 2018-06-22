@@ -540,7 +540,6 @@
 				3E22C7AE20A95391000A28A6 /* AppDelegate.swift */,
 				3ECB59C520A965CA0037BD99 /* Colors.xcassets */,
 				3E22C7B520A95393000A28A6 /* Images.xcassets */,
-				3E22C7B720A95393000A28A6 /* LaunchScreen.storyboard */,
 				3E22C7BA20A95393000A28A6 /* Info.plist */,
 				3E2101BF20AC23AA0023FA06 /* MINQ.xcdatamodeld */,
 				3E76953720CA51090007FCAF /* Settings.bundle */,
@@ -575,6 +574,7 @@
 				3E35323E20B5648E0013CEBE /* AppRootViewModel.swift */,
 				3E3A053D20AD26220019CFC1 /* MenuViewController.swift */,
 				3E907F3020B3E61A006A3478 /* Navigator.swift */,
+				3E22C7B720A95393000A28A6 /* LaunchScreen.storyboard */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
