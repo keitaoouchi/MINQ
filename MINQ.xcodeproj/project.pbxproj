@@ -807,10 +807,12 @@
 				TargetAttributes = {
 					3E14500C20CE2BCA00ECACAE = {
 						CreatedOnToolsVersion = 9.3.1;
+						LastSwiftMigration = 1000;
 						TestTargetID = 3E22C7AA20A95391000A28A6;
 					};
 					3E22C7AA20A95391000A28A6 = {
 						CreatedOnToolsVersion = 9.3.1;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};

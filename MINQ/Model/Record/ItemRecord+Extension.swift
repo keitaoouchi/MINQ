@@ -54,6 +54,26 @@ extension ItemRecord {
     }
   }
 
+  static func like(item: Item) throws {
+    if let record = try find(by: item.id),
+       let currentCount = record.likesCount.value {
+      let realm = try Realm()
+      try realm.write {
+        record.setValue(currentCount + 1, forKey: "likesCount")
+      }
+    }
+  }
+
+  static func unlike(item: Item) throws {
+    if let record = try find(by: item.id),
+      let currentCount = record.likesCount.value {
+      let realm = try Realm()
+      try realm.write {
+        record.setValue(currentCount - 1, forKey: "likesCount")
+      }
+    }
+  }
+
   func touch() throws {
     let realm = try Realm()
     try realm.write {

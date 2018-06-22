@@ -121,4 +121,26 @@ extension ItemCollectionRecord {
     }
   }
 
+  static func drop(item: Item, from type: ItemQuery.QueryType) throws {
+    let realm = try Realm()
+    try realm.write {
+      let record = try ItemCollectionRecord.findOrNew(of: type)
+      let predicate = NSPredicate(format: "id = %@", item.id)
+      if let index = record.items.index(matching: predicate) {
+        record.items.remove(at: index)
+      }
+    }
+  }
+
+  static func append(item: Item, to type: ItemQuery.QueryType) throws {
+    try drop(item: item, from: type)
+    let realm = try Realm()
+    try realm.write {
+      let record = try ItemCollectionRecord.findOrNew(of: type)
+      let itemRecord = ItemRecord(entity: item)
+      realm.add(itemRecord, update: true)
+      record.items.insert(itemRecord, at: 0)
+    }
+  }
+
 }
