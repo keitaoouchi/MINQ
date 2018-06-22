@@ -16,7 +16,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>6</string>
+			<string>7</string>
 			<key>Key</key>
 			<string>sbBuild</string>
 			<key>Title</key>
