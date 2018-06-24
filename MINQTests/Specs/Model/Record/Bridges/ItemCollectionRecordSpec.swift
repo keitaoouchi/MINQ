@@ -79,5 +79,25 @@ class ItemCollectionRecordSpec: QuickSpec {
       }
     }
     
+    describe(".drop(item:from:)") {
+      it("should drop given item from given type of record") {
+        let items = TestFixture.items
+        try! ItemCollectionRecord.save(of: .mine, with: items, paging: nil)
+        try! ItemCollectionRecord.drop(item: items.first!, from: .mine)
+        let record = try! ItemCollectionRecord.find(of: .mine)
+        expect(record!.items.map { $0.id } ).notTo(contain([items.first!.id]))
+      }
+    }
+    
+    describe(".append(item:to:)") {
+      it("should drop given item from given type of record") {
+        let items = TestFixture.items
+        try! ItemCollectionRecord.save(of: .mine, with: items.dropFirst().map { $0 }, paging: nil)
+        try! ItemCollectionRecord.append(item: items.first!, to: .mine)
+        let record = try! ItemCollectionRecord.find(of: .mine)
+        expect(record!.items.map { $0.id }).to(contain([items.first!.id]))
+      }
+    }
+    
   }
 }

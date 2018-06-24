@@ -5,6 +5,7 @@ import WebKit
 import RxSwift
 import FluxxKit
 import HTMLString
+import RealmSwift
 
 final class ItemDetailViewController: UIViewController {
 
@@ -37,19 +38,19 @@ final class ItemDetailViewController: UIViewController {
     return UIBarButtonItem(image: AppInfo.safariImage, style: .done, target: self, action: #selector(openInSafari))
   }()
 
-  private var loader: LoadingStateView?
-
-  private let disposeBag = DisposeBag()
-  private let markdownView = MarkdownView()
-  private(set) var store: ItemDetailViewModel.ItemDetailStore!
-  private(set) var actionCreator: ItemDetailViewModel.AsyncActionCreator!
-
   private var itemRecord: ItemRecord! {
     didSet {
       self.item = Item(record: itemRecord)!
     }
   }
   private(set) var item: Item!
+
+  private var loader: LoadingStateView?
+  private let disposeBag = DisposeBag()
+  private let markdownView = MarkdownView()
+  private(set) var store: ItemDetailViewModel.ItemDetailStore!
+  private(set) var actionCreator: ItemDetailViewModel.AsyncActionCreator!
+  private var notificationToken: NotificationToken?
 
   static func make(for item: ItemRecord) -> ItemDetailViewController {
     let vc = StoryboardScene.ItemDetail.itemDetail.instantiate()
@@ -58,6 +59,10 @@ final class ItemDetailViewController: UIViewController {
     vc.store = store
     vc.actionCreator = ItemDetailViewModel.AsyncActionCreator(store: store)
     return vc
+  }
+
+  deinit {
+    self.notificationToken?.invalidate()
   }
 
 }
@@ -93,8 +98,12 @@ extension ItemDetailViewController {
 private extension ItemDetailViewController {
 
   func configure() {
+    self.notificationToken = self.itemRecord.observe { [weak self] _ in
+      if let likesCount = self?.itemRecord.likesCount.value {
+        self?.likesCountLabel.text = "\(likesCount)"
+      }
+    }
     titleLabel.text = item.title.removingHTMLEntities
-    likesCountLabel.text = "\(item.likesCount)"
     commentsCountLabel.text = "\(item.commentsCount)"
     userNameLabel.text = item.user.id
     createdDateLabel.text = item.createdDateString

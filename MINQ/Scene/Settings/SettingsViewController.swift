@@ -68,9 +68,8 @@ final class SettingsViewController: UITableViewController {
     let row = indexPath.row
     if section == 0 {
       if row == 0 {
-        let scheme = "App-Prefs:root=General&path=\(AppInfo.bundleID)"
-        if let url = URL(string: scheme), UIApplication.shared.canOpenURL(url) {
-          UIApplication.shared.open(url)
+        if let url = URL(string: UIApplicationOpenSettingsURLString), UIApplication.shared.canOpenURL(url) {
+          UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
       }
     } else {

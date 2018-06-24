@@ -235,16 +235,26 @@ extension Item {
       .map { response in
         return response.statusCode == 204
       }
+      .do(onSuccess: { success in
+        if success {
+          try? ItemRecord.like(item: self)
+        }
+      })
   }
 
   func unlike() -> Single<Bool> {
     return API
       .provider
       .rx
-      .request(.likeItem(item: self))
+      .request(.unlikeItem(item: self))
       .map { response in
         return response.statusCode == 204
       }
+      .do(onSuccess: { success in
+        if success {
+          try? ItemRecord.unlike(item: self)
+        }
+      })
   }
 }
 
@@ -269,7 +279,12 @@ extension Item {
       .request(.stockItem(item: self))
       .map { response in
         return response.statusCode == 204
-    }
+      }
+      .do(onSuccess: { success in
+        if success {
+          try? ItemCollectionRecord.append(item: self, to: .stocks)
+        }
+      })
   }
 
   func unstock() -> Single<Bool> {
@@ -279,6 +294,11 @@ extension Item {
       .request(.unstockItem(item: self))
       .map { response in
         return response.statusCode == 204
-    }
+      }
+      .do(onSuccess: { success in
+        if success {
+          try? ItemCollectionRecord.drop(item: self, from: .stocks)
+        }
+      })
   }
 }
