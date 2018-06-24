@@ -48,6 +48,26 @@ class ItemRecordSpec: QuickSpec {
       }
     }
     
+    describe(".like(item:)") {
+      it("should increment its likesCount") {
+        let item = TestFixture.item
+        try! ItemRecord.save(entity: item)
+        try! ItemRecord.like(item: item)
+        let itemRecord = try! ItemRecord.find(by: item.id)
+        expect(itemRecord!.likesCount.value!).to(equal(item.likesCount + 1))
+      }
+    }
+    
+    describe(".unlike(item:)") {
+      it("should decrement its likesCount") {
+        let item = TestFixture.item
+        try! ItemRecord.save(entity: item)
+        try! ItemRecord.unlike(item: item)
+        let itemRecord = try! ItemRecord.find(by: item.id)
+        expect(itemRecord!.likesCount.value!).to(equal(item.likesCount - 1))
+      }
+    }
+    
     describe(".touch()") {
       it("should update its readAt to current date time") {
         let item = TestFixture.item
