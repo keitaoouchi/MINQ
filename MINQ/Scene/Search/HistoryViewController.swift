@@ -1,25 +1,45 @@
 import UIKit
+import RxSwift
+import RxRelay
 import RealmSwift
 import FluxxKit
 
 final class HistoryViewController: UITableViewController {
-  var records: Results<ItemRecord> = try! ItemRecord.findReadItems()
-  var notification: NotificationToken?
+  private let items: BehaviorRelay<[Item]>
+  private let notificationToken: NotificationToken
+  private let disposeBag = DisposeBag()
 
-  static func make() -> HistoryViewController {
-    return StoryboardScene.Search.history.instantiate()
+  init() {
+    let watcher = ItemRepository.watchReadItems()
+    items = watcher.items
+    notificationToken = watcher.token
+    super.init(style: .grouped)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
   deinit {
-    self.notification?.invalidate()
+    notificationToken.invalidate()
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.notification = self.records.observe { [weak self] _ in
-      self?.tableView.reloadData()
-    }
+    tableView.backgroundColor = Asset.Colors.bg.color
+    tableView.separatorInset = Style.Margin.itemCollection
+
+    tableView.register(cellType: HistoryCell.self)
+
+    items.subscribe { [weak self] event in
+      switch event {
+      case .next:
+        self?.tableView.reloadData()
+      default:
+        break
+      }
+    }.disposed(by: disposeBag)
   }
 }
 
@@ -29,21 +49,40 @@ extension HistoryViewController {
     return 1
   }
 
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let view = UIView(frame: .zero)
+    let label = UILabel()
+    label.text = L10n.viewHistory
+    label.font = Style.Font.base(20, .bold)
+    let margin = Style.Margin.itemCollection
+    view.minq.attach(label, top: margin.top, leading: margin.left, trailing: nil, bottom: -8)
+    return view
+  }
+
+  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return nil
+  }
+
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return records.count
+    return items.value.count
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let record = records[indexPath.row]
+    let item = items.value[indexPath.row]
     let cell = tableView.dequeueReusableCell(for: indexPath) as HistoryCell
-    cell.apply(record: record)
+    cell.apply(item: item) { user in
+      Dispatcher.shared.dispatch(action: Navigator.Link.user(user))
+    }
     return cell
   }
 
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let record = records[indexPath.row]
+    let item = items.value[indexPath.row]
     Dispatcher.shared.dispatch(
-      action: Navigator.Link.item(item: record))
+      action: Navigator.Link.item(item))
   }
 
+  override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    .leastNormalMagnitude
+  }
 }

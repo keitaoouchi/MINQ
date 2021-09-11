@@ -16,16 +16,18 @@ struct Navigator: StateType {
 
   // MARK: - State
   let userStream = PublishSubject<User>()
-  let tagStream = PublishSubject<Tag>()
-  let itemStream = PublishSubject<ItemRecord>()
+  let tagStream = PublishSubject<ItemTag>()
+  let itemStream = PublishSubject<Item>()
+  let itemIdStream = PublishSubject<String>()
   let urlStream = PublishSubject<URL>()
 
   // MARK: - Action
   enum Link: ActionType {
-    case user(user: User)
-    case tag(tag: Tag)
-    case item(item: ItemRecord)
-    case url(url: URL)
+    case user(_ user: User)
+    case tag(_ tag: ItemTag)
+    case item(_ item: Item)
+    case itemId(_ itemId: String)
+    case url(_ url: URL)
   }
 
   // MARK: - Reducer
@@ -38,6 +40,8 @@ struct Navigator: StateType {
         state.tagStream.onNext(tag)
       case .item(let item):
         state.itemStream.onNext(item)
+      case .itemId(let itemId):
+        state.itemIdStream.onNext(itemId)
       case .url(let url):
         state.urlStream.onNext(url)
       }
@@ -48,36 +52,48 @@ struct Navigator: StateType {
 // MARK: - Binder
 extension Navigator {
   func bind(to viewController: UIViewController, with disposer: DisposeBag) {
-    self
-      .userStream
+    userStream
       .subscribe(onNext: { [weak viewController] user in
         let query = ItemQuery(type: .user(user: user))
-        let vc = ItemTableViewController.make(by: query)
+        let vc = ItemCollectionViewController(query: query, avoidCache: false)
         viewController?.navigationController?.pushViewController(vc, animated: true)
       }).disposed(by: disposer)
 
-    self
-      .tagStream
+    tagStream
       .subscribe(onNext: { [weak viewController] tag in
         let query = ItemQuery(type: .tag(tag: tag))
-        let vc = ItemTableViewController.make(by: query)
+        let vc = ItemCollectionViewController(query: query, avoidCache: false)
         viewController?.navigationController?.pushViewController(vc, animated: true)
         AnalyticsService.log(event: .viewItemsBy(tag: tag))
       }).disposed(by: disposer)
 
-    self
-      .itemStream
+    itemStream
       .subscribe(onNext: { [weak viewController] item in
         let vc = ItemDetailViewController.make(for: item)
         viewController?.navigationController?.pushViewController(vc, animated: true)
-        if let id = item.id {
-          AnalyticsService.log(event: .viewItem(id: id))
+        AnalyticsService.log(event: .viewItem(id: item.id))
+
+        // 詳細画面が破棄された時に評価値が変わっていたらレビュー依頼を出す
+        let current = ReviewRequestService.shouldRequestReview
+        _ = vc.rx.deallocating.takeUntil(vc.rx.deallocating).observeOn(MainScheduler.instance).subscribe { _ in
+          if ReviewRequestService.shouldRequestReview != current {
+            ReviewRequestService.request()
+          }
         }
       }).disposed(by: disposer)
 
-    self
-      .urlStream
+    itemIdStream
+      .flatMap { ItemRepository.find(by: $0) }
+      .subscribe(onNext: { item in
+        itemStream.onNext(item)
+      }, onError: { error in
+        Dispatcher.shared.dispatch(action: AppRootViewModel.Action.show(message: .alert(message: error.localizedDescription)))
+      }).disposed(by: disposer)
+
+    urlStream
       .subscribe(onNext: { [weak viewController] url in
+        guard let scheme = url.scheme, scheme == "http" || scheme == "https" else { return }
+
         let safari = SFSafariViewController(url: url)
         viewController?.navigationController?.viewControllers.first?.present(safari, animated: true, completion: nil)
       }).disposed(by: disposer)

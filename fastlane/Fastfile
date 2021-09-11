@@ -27,7 +27,6 @@ platform :ios do
   desc "セットアップ(Certifications, CocoaPods, Carthage)"
   lane :setup do |options|
     cocoapods(try_repo_update_on_error: true)
-    carthage(platform: "iOS", cache_builds: true)
   end
 
   desc "Betaビルドの配布"

@@ -2,53 +2,46 @@ import UIKit
 import FluxxKit
 import RxSwift
 import RealmSwift
-import PagingMenuController
+import Parchment
 
 final class HomeViewController: UIViewController, Navigatable {
-
-  private let menuRecord: MenuRecord = MenuRecord.instance
-  private var menuItems: [ItemQuery.QueryType]!
-  private var vcs: [ItemTableViewController]!
+  private var queries: [ItemQuery.QueryType]!
+  private var vcs: [ItemCollectionViewController]!
+  private var menu: PagingViewController!
   private let navigator = Navigator.make()
-  private let disposeBag = DisposeBag()
-  private var notificationToken: NotificationToken?
-  private var pagingMenu: PagingMenuController!
+  private let viewModel = HomeViewModel()
+  private var channelObserver: Disposable?
+
+  init() {
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   deinit {
-    self.notificationToken?.invalidate()
     Dispatcher.shared.unregister(store: self.navigator)
+    channelObserver?.dispose()
   }
 
   override func loadView() {
     super.loadView()
-    self.minq.setTabBarItem(image: AppInfo.homeImage, title: "ホーム")
-    self.navigationItem.titleView = UIImageView(
-      image: Asset.Images.logoDeepGreen.image
+    minq.setTabBarItem(image: Icon.homeImage, title: L10n.home)
+    navigationItem.titleView = UIImageView(
+      image: Asset.Images.logo.image
     )
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.setupNavigationItems()
-    self.setTables()
-    self.pagingMenu = PagingMenuController(
-      options: MINQMenu(vcs: self.vcs)
-    )
+    navigationController?.navigationBar.isTranslucent = false
+    setupNavigationItems()
+    setVcs()
+    setPagingViewController()
 
-    self.minq.fill(with: self.pagingMenu)
-    self.pagingMenu.move(toPage: 1)
-    self.pagingMenu.move(toPage: 0)
-
-    self.notificationToken = self.menuRecord.observe { [weak self] _ in
-      guard let _self = self else { return }
-      _self.setTables()
-      _self.pagingMenu.setup(MINQMenu(vcs: _self.vcs))
-      _self.pagingMenu.move(toPage: 1)
-      _self.pagingMenu.move(toPage: 0)
-    }
-
-    self.bind(store: self.navigator)
+    bind(store: self.navigator)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -56,61 +49,122 @@ final class HomeViewController: UIViewController, Navigatable {
     hidesBottomBarWhenPushed = true
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    if viewModel.needsUpdate {
+      channelObserver?.dispose()
+      setVcs()
+      menu.reloadData(around: pagingIndexItem(for: 0))
+    }
+  }
+
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     hidesBottomBarWhenPushed = false
+
+    self.channelObserver = viewModel.observeWatchingTagsChanges()
   }
 
   func activate() {
     Dispatcher.shared.unregister(store: Navigator.NavigationStore.self)
     Dispatcher.shared.register(store: self.navigator)
   }
-
 }
 
-// MARK: - private
+// MARK: - MISC
 private extension HomeViewController {
+  func setupNavigationItems() {
+    let editChannelImage = UIImage.fontAwesomeIcon(
+      name: .broadcastTower,
+      style: .solid,
+      textColor: .secondaryLabel,
+      size: CGSize(width: 30, height: 30)
+    )
+    let channelEditButton = UIBarButtonItem(
+      image: editChannelImage,
+      style: .done,
+      target: self,
+      action: #selector(onTapChannelEditButton)
+    )
+    navigationItem.rightBarButtonItem = channelEditButton
+  }
 
-  func setTables() {
-    self.menuItems = [
+  func setVcs() {
+    let tags = WatchingTagRepository
+      .findAllTagNames()
+      .map { name -> ItemQuery.QueryType in
+        let tag = ItemTag(name: name)
+        return ItemQuery.QueryType.tag(tag: tag)
+      }
+    var queries = Array(tags)
+    queries.insert(contentsOf: [
       .latest,
       .stocks,
       .mine
-    ]
-    self.menuRecord.tags.forEach { tagRecord in
-      if let name = tagRecord.name {
-        let tag = Tag(name: name)
-        let query = ItemQuery.QueryType.tag(tag: tag)
-        self.menuItems.append(query)
-      }
-    }
-    self.vcs = menuItems.map { type -> ItemTableViewController in
-      let vc = ItemTableViewController.make(by: ItemQuery(type: type))
+    ], at: 0)
+    let vcs = queries.map { type -> ItemCollectionViewController in
+      let vc = ItemCollectionViewController(query: ItemQuery(type: type), avoidCache: false)
+      vc.title = type.title
       return vc
     }
+    self.queries = queries
+    self.vcs = vcs
   }
 
-  func setupNavigationItems() {
-    let editChannelImage = UIImage.fontAwesomeIcon(
-      name: .flash,
-      textColor: Asset.Colors.gray.color,
-      size: CGSize(width: 30, height: 30)
-    )
-    let editChannelButton = UIBarButtonItem(
-      image: editChannelImage,
-      style: UIBarButtonItemStyle.done,
-      target: self,
-      action: #selector(onTapEditMenuButton)
-    )
-    navigationItem.rightBarButtonItem = editChannelButton
-  }
-
-  @objc func onTapEditMenuButton() {
-    let vc = StoryboardScene.MenuEdit.initialScene.instantiate()
+  @objc func onTapChannelEditButton() {
+    let vc = ChannelsViewController()
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
   func bind(store: Navigator.NavigationStore) {
-    store.state.bind(to: self, with: self.disposeBag)
+    store.state.bind(to: self, with: viewModel.disposeBag)
+  }
+}
+
+// MARK: - Parchment
+extension HomeViewController: PagingViewControllerInfiniteDataSource {
+  private func setPagingViewController() {
+    let menu = PagingViewController()
+    menu.infiniteDataSource = self
+    menu.menuBackgroundColor = Asset.Colors.menuBckground.color
+    menu.backgroundColor = Asset.Colors.menuBckground.color
+    menu.selectedBackgroundColor = Asset.Colors.menuBckground.color
+    menu.borderColor = .clear
+    menu.indicatorColor = .clear
+    menu.textColor = .white
+    menu.selectedTextColor = .white
+    menu.selectedFont = .systemFont(ofSize: 16, weight: .bold)
+    menu.font = .systemFont(ofSize: 16, weight: .regular)
+    menu.select(pagingItem: pagingIndexItem(for: 0))
+    minq.fill(with: menu)
+    self.menu = menu
+  }
+
+  private func pagingIndexItem(for index: Int) -> PagingIndexItem {
+    var titleIndex = index % vcs.count
+    if titleIndex < 0 {
+      titleIndex = vcs.count + titleIndex
+    }
+    return PagingIndexItem(index: index, title: queries[titleIndex].title)
+  }
+
+  func pagingViewController(_: PagingViewController, viewControllerFor pagingItem: PagingItem) -> UIViewController {
+    let item = pagingItem as! PagingIndexItem
+    var index = item.index % vcs.count
+    if index < 0 {
+      index = vcs.count + index
+    }
+    return self.vcs[index]
+  }
+
+  func pagingViewController(_: PagingViewController, itemBefore pagingItem: PagingItem) -> PagingItem? {
+    let item = pagingItem as! PagingIndexItem
+    return pagingIndexItem(for: item.index - 1)
+  }
+
+  func pagingViewController(_: PagingViewController, itemAfter pagingItem: PagingItem) -> PagingItem? {
+    let item = pagingItem as! PagingIndexItem
+    return pagingIndexItem(for: item.index + 1)
   }
 }

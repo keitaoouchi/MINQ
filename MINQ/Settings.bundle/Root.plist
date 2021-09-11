@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>DefaultValue</key>
-			<string>3.0.1</string>
+			<string>$(MARKETING_VERSION)</string>
 			<key>Key</key>
 			<string>sbVersion</string>
 			<key>Title</key>
@@ -16,7 +16,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>8</string>
+			<string>$(CURRENT_PROJECT_VERSION)</string>
 			<key>Key</key>
 			<string>sbBuild</string>
 			<key>Title</key>

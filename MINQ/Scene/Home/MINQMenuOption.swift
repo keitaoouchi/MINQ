@@ -1,5 +1,5 @@
-import PagingMenuController
-
+import Parchment
+/*
 struct MINQMenuItem: MenuItemViewCustomizable {
   let title: String
 
@@ -64,3 +64,4 @@ struct MINQMenu: PagingMenuControllerCustomizable {
     )
   }
 }
+ */

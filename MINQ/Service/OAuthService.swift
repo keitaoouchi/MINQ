@@ -17,7 +17,7 @@ struct OAuthService {
   var url: URL {
     let str = [
       "https://qiita.com/api/v2/oauth/authorize?",
-      "&client_id=\(OAuthService.clientId)",
+      "client_id=\(OAuthService.clientId)",
       "&scope=\(OAuthService.scope)",
       "&state=\(state)"
     ].joined()

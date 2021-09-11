@@ -16,12 +16,13 @@ struct AnalyticsService {
 
 enum AnalyticsEvent {
   case viewItem(id: String)
-  case viewItemsBy(tag: Tag)
+  case viewItemsBy(tag: ItemTag)
   case like(itemId: String)
   case stock(itemId: String)
   case signin(sucess: Bool)
   case search
   case reset
+  case requestReview(stock: Int, likes: Int)
 }
 
 extension AnalyticsEvent: EventType {
@@ -42,6 +43,8 @@ extension AnalyticsEvent: EventType {
       return "search"
     case .reset:
       return "reset"
+    case .requestReview:
+      return "request_review"
     }
   }
 
@@ -55,6 +58,8 @@ extension AnalyticsEvent: EventType {
       return ["item_id": itemId]
     case .signin(let success):
       return ["success": success]
+    case .requestReview(let stocks, let likes):
+      return ["stocks": stocks, "likes": likes]
     default:
       return nil
     }

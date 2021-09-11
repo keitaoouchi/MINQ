@@ -1,7 +1,7 @@
 import Moya
 
 typealias ItemsContainer = ContentsContainer<Item>
-typealias TagsContainer = ContentsContainer<Tag>
+typealias TagsContainer = ContentsContainer<FollowingTag>
 typealias UserContainer = ContentContainer<User>
 typealias ItemContainer = ContentContainer<Item>
 
@@ -23,15 +23,16 @@ struct ContentsContainer<T: MINQCodable> {
   let links: [Link]
   let rateLimit: RateLimit?
 
-  var nextPaging: Paging? {
+  var nextPage: PagingState {
     let queries = links.filter { $0.rel == .next }.first?.url.minq_queryDictionary
     if let pageStr = queries?["page"],
        let page = Int(pageStr),
        let perPageStr = queries?["per_page"],
        let perPage = Int(perPageStr) {
-      return Paging(page: page, perPage: perPage)
+      let paging = Paging(page: page, perPage: perPage)
+      return .newPage(paging: paging)
     } else {
-      return nil
+      return .noPage
     }
   }
 

@@ -7,7 +7,15 @@ final class SearchViewController: UIViewController {
   private let disposeBag = DisposeBag()
   private let navigator = Navigator.make()
   private let store = SearchViewModel.make()
-  private let historyVC = HistoryViewController.make()
+  private let historyVC = HistoryViewController()
+
+  init() {
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   deinit {
     Dispatcher.shared.unregister(store: self.navigator)
@@ -20,28 +28,30 @@ extension SearchViewController: Navigatable {
 
   override func loadView() {
     super.loadView()
-    self.minq.setTabBarItem(image: AppInfo.searchImage, title: "検索")
-    self.navigationItem.titleView = UIImageView(
-      image: Asset.Images.logoDeepGreen.image
+    minq.setTabBarItem(image: Icon.searchImage, title: L10n.search)
+    navigationItem.titleView = UIImageView(
+      image: Asset.Images.logo.image
     )
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.setSearchController()
+    navigationController?.navigationBar.isTranslucent = false
 
-    Dispatcher.shared.register(store: self.store)
-    Dispatcher.shared.register(store: self.navigator)
-    self.navigator.state.bind(to: self, with: self.disposeBag)
-    self.bind(store: self.store)
+    setSearchController()
 
-    self.minq.fill(with: self.historyVC)
+    Dispatcher.shared.register(store: store)
+    Dispatcher.shared.register(store: navigator)
+    navigator.state.bind(to: self, with: disposeBag)
+    bind(store: store)
+
+    minq.fill(with: historyVC)
   }
 
   func activate() {
     Dispatcher.shared.unregister(store: Navigator.NavigationStore.self)
-    Dispatcher.shared.register(store: self.navigator)
+    Dispatcher.shared.register(store: navigator)
   }
 }
 
@@ -54,15 +64,15 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
   }
 
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    self.minq.fill(with: self.historyVC)
+    minq.fill(with: historyVC)
   }
 
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    guard let query = self.navigationItem.searchController?.searchBar.text,
+    guard let query = navigationItem.searchController?.searchBar.text,
       query.count > 0 else { return }
     let itemQuery = ItemQuery(type: .search(string: query))
-    let vc = ItemTableViewController.make(by: itemQuery)
-    self.minq.fill(with: vc)
+    let vc = ItemCollectionViewController(query: itemQuery, avoidCache: true)
+    minq.fill(with: vc)
     AnalyticsService.log(event: .search)
   }
 
@@ -80,22 +90,22 @@ private extension SearchViewController {
     searchController.searchBar.enablesReturnKeyAutomatically = true
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
-    self.definesPresentationContext = true
+    definesPresentationContext = true
   }
 
   func bind(store: SearchViewModel.SearchStore) {
 
-    self.store.state.unfocusSignal.asDriver(onErrorJustReturn: ())
+    store.state.unfocusSignal.asDriver(onErrorJustReturn: ())
       .drive(onNext: { [weak self] in
         self?.navigationItem.searchController?.searchBar.resignFirstResponder()
-      }).disposed(by: self.disposeBag)
+      }).disposed(by: disposeBag)
 
-    self.store.state.query.asObserver()
+    store.state.query.asObserver()
       .distinctUntilChanged()
       .subscribeOn(MainScheduler.instance)
       .subscribe(onNext: { [weak self] query in
         guard let searchBar = self?.navigationItem.searchController?.searchBar else { return }
         searchBar.text = query
-      }).disposed(by: self.disposeBag)
+      }).disposed(by: disposeBag)
   }
 }

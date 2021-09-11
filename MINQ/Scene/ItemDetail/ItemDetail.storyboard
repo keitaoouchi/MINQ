@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Item Detail View Controller-->
+        <scene sceneID="fnc-Gc-4Zf">
+            <objects>
+                <viewController storyboardIdentifier="ItemDetail" id="bBQ-YX-im9" customClass="ItemDetailViewController" customModule="MINQ" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mR6-8h-wKc"/>
+                        <viewControllerLayoutGuide type="bottom" id="TWI-Od-OoY"/>
+                    </layoutGuides>
+                    <view key="view" autoresizesSubviews="NO" contentMode="scaleToFill" id="CUn-fs-kC9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NRq-pZ-oC2">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fFO-1q-mxP" userLabel="Content">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="748"/>
+                                        <subviews>
+                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="O3u-6i-n4a">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="2.5"/>
+                                            </progressView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstItem="O3u-6i-n4a" firstAttribute="leading" secondItem="fFO-1q-mxP" secondAttribute="leading" id="SUk-kV-bo7"/>
+                                            <constraint firstAttribute="trailing" secondItem="O3u-6i-n4a" secondAttribute="trailing" id="WqX-h4-ogw"/>
+                                            <constraint firstItem="O3u-6i-n4a" firstAttribute="top" secondItem="fFO-1q-mxP" secondAttribute="top" id="et5-j0-hrb"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="fFO-1q-mxP" firstAttribute="top" secondItem="Svy-9g-H4Y" secondAttribute="top" id="JfE-nX-3mR"/>
+                                    <constraint firstItem="fFO-1q-mxP" firstAttribute="width" secondItem="Svy-9g-H4Y" secondAttribute="width" id="TJt-jT-uzf"/>
+                                    <constraint firstItem="fFO-1q-mxP" firstAttribute="trailing" secondItem="Svy-9g-H4Y" secondAttribute="trailing" id="cde-zM-PPR"/>
+                                    <constraint firstItem="fFO-1q-mxP" firstAttribute="bottom" secondItem="Svy-9g-H4Y" secondAttribute="bottom" id="rkM-Fj-ynC"/>
+                                    <constraint firstItem="fFO-1q-mxP" firstAttribute="leading" secondItem="Svy-9g-H4Y" secondAttribute="leading" id="rzi-05-abG"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="Svy-9g-H4Y"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="7j6-89-kaY"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="TVf-Uz-qA5"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="NRq-pZ-oC2" firstAttribute="leading" secondItem="TVf-Uz-qA5" secondAttribute="leading" id="97Z-tq-Z19"/>
+                            <constraint firstItem="NRq-pZ-oC2" firstAttribute="bottom" secondItem="TVf-Uz-qA5" secondAttribute="bottom" id="RQN-jp-tfm"/>
+                            <constraint firstItem="NRq-pZ-oC2" firstAttribute="trailing" secondItem="TVf-Uz-qA5" secondAttribute="trailing" id="cfq-6x-iGd"/>
+                            <constraint firstItem="fFO-1q-mxP" firstAttribute="width" secondItem="CUn-fs-kC9" secondAttribute="width" id="e4I-8m-SJW"/>
+                            <constraint firstItem="NRq-pZ-oC2" firstAttribute="top" secondItem="TVf-Uz-qA5" secondAttribute="top" id="ed1-1a-JFb"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="contentView" destination="fFO-1q-mxP" id="iTt-H6-3H1"/>
+                        <outlet property="progressBar" destination="O3u-6i-n4a" id="txA-D4-uHD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AaN-XZ-8aU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="794" y="-155"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

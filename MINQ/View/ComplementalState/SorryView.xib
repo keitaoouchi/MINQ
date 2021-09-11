@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="8kX-WB-aa8" customClass="SorryView" customModule="MINQ" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="zqR-ZP-gNc">
+                    <rect key="frame" x="66.5" y="380" width="281.5" height="136"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="😭" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cJR-uC-VHg">
+                            <rect key="frame" x="116" y="0.0" width="49" height="53"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="44"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wT7-Gb-QHz">
+                            <rect key="frame" x="0.0" y="69" width="281.5" height="67"/>
+                            <string key="text">アウチ！
+Markdownの表示がタイムアウトしました。
+ネットワーク環境をお確かめのうえ
+再度お試しください🙏</string>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="zdU-IC-KOt"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="zqR-ZP-gNc" firstAttribute="centerY" secondItem="8kX-WB-aa8" secondAttribute="centerY" id="08i-7K-z6O"/>
+                <constraint firstItem="zqR-ZP-gNc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8kX-WB-aa8" secondAttribute="top" constant="12" id="QOY-CW-j4Q"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zqR-ZP-gNc" secondAttribute="bottom" constant="12" id="bXd-Yw-aJU"/>
+                <constraint firstItem="zqR-ZP-gNc" firstAttribute="centerX" secondItem="8kX-WB-aa8" secondAttribute="centerX" id="yEn-tz-Nrp"/>
+            </constraints>
+            <point key="canvasLocation" x="628" y="30"/>
+        </view>
+    </objects>
+</document>
