@@ -14,7 +14,7 @@ struct SettingsViewModel: StateType {
     case failed
   }
 
-  let viewState = Variable<ViewState>(.initial)
+  let viewState = BehaviorRelay<ViewState>(value: .initial)
 
   static func make() -> SettingsStore {
     return SettingsStore(reducer: StoreReducer())
@@ -30,7 +30,7 @@ struct SettingsViewModel: StateType {
     override func reduce(state: SettingsViewModel, action: Transition) {
       switch action {
       case .view(let newState):
-        state.viewState.value = newState
+        state.viewState.accept(newState)
       }
     }
   }
@@ -48,33 +48,36 @@ extension SettingsViewModel {
     }
 
     func signout() {
-      Authentication.destroy().subscribe(onSuccess: { _ in
+      UserRepository.clearMe()
+      try? ItemRepository.clear(type: .mine)
+      try? ItemRepository.clear(type: .stocks)
+      AuthenticationRepository.destroy().subscribe(onSuccess: { _ in
         Dispatcher.shared.dispatch(
           action: AppRootViewModel.Action.show(
-            message: .success(message: "ログアウトしました")))
-      }).disposed(by: self.disposeBag)
+            message: .success(message: L10n.loggedOut)))
+      }).disposed(by: disposeBag)
     }
 
     func clearCache() {
-      Dispatcher.shared.dispatch(action: AppRootViewModel.Action.reset)
+      Dispatcher.shared.dispatch(action: AppRootViewModel.Action.reset(force: false))
     }
 
-    func sync(with authStored: Variable<Bool>) {
+    func sync(with authStored: BehaviorRelay<Bool>) {
       authStored.asObservable().subscribe(onNext: { isStored in
         if isStored {
-          self.store.dispatch(action: SettingsViewModel.Transition.view(to: .requesting))
-          User.whoami().subscribe(
+          store.dispatch(action: SettingsViewModel.Transition.view(to: .requesting))
+          UserRepository.whoami().subscribe(
             onSuccess: { userContainer in
-              self.store.dispatch(action: SettingsViewModel.Transition.view(to: .signed(user: userContainer.content)))
+              store.dispatch(action: SettingsViewModel.Transition.view(to: .signed(user: userContainer.content)))
           },
             onError: { _ in
-              self.store.dispatch(action: SettingsViewModel.Transition.view(to: .failed))
+              store.dispatch(action: SettingsViewModel.Transition.view(to: .failed))
           }
-            ).disposed(by: self.disposeBag)
+            ).disposed(by: disposeBag)
         } else {
-          self.store.dispatch(action: SettingsViewModel.Transition.view(to: .anonymouse))
+          store.dispatch(action: SettingsViewModel.Transition.view(to: .anonymouse))
         }
-      }).disposed(by: self.disposeBag)
+      }).disposed(by: disposeBag)
     }
   }
 }

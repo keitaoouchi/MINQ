@@ -12,14 +12,15 @@ enum API: TargetType {
   case signout(accessToken: String)
 
   case item(id: String)
-  case tagItems(tag: Tag, paging: Paging)
+  case tagItems(tag: ItemTag, paging: Paging)
   case userItems(user: User, paging: Paging)
   case userStockedItems(user: User, paging: Paging)
   case anyItems(query: String, paging: Paging)
+  case comments(id: String)
 
-  case isFollowingTag(tag: Tag)
-  case followTag(tag: Tag)
-  case unfollowTag(tag: Tag)
+  case isFollowingTag(tag: ItemTag)
+  case followTag(tag: ItemTag)
+  case unfollowTag(tag: ItemTag)
   case followingTags(user: User, paging: Paging)
 
   case isLikedItem(item: Item)
@@ -74,6 +75,8 @@ extension API {
       return "/users/\(user.id)/stocks"
     case .anyItems:
       return "/items"
+    case .comments(let id):
+      return "/items/\(id)/comments"
     case .isFollowingTag(let tag),
          .followTag(let tag),
          .unfollowTag(let tag):
@@ -142,7 +145,7 @@ extension API {
     case .none:
       return nil
     default:
-      if let authentication = Authentication.retrieve() {
+      if let authentication = AuthenticationRepository.find() {
         return ["Authorization": "Bearer \(authentication.accessToken)"]
       } else {
         return nil

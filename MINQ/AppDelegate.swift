@@ -1,26 +1,29 @@
 import UIKit
 import Firebase
-import Fabric
-import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-      Fabric.with([Answers.self, Crashlytics.self])
-      FirebaseApp.configure()
-      Debugger.configure()
-      MINQDatabase.configure()
+    FirebaseApp.configure()
+    Debugger.configure()
+    MINQDatabase.configure()
+    try! WatchingTagRepository.storeInitialRecordsIfNeeded()
 
-      UINavigationBar.appearance().tintColor = Asset.Colors.gray.color
-      UITabBar.appearance().tintColor = Asset.Colors.green.color
-      UIButton.appearance().isExclusiveTouch = true
+    UINavigationBar.appearance().tintColor = .secondaryLabel
+    UITabBar.appearance().tintColor = Asset.Colors.green.color
+    UIButton.appearance().isExclusiveTouch = true
 
-      return true
-    }
+    let window = UIWindow(frame: UIScreen.main.bounds)
+    self.window = window
+    window.makeKeyAndVisible()
+    let vc = AppRootViewController()
+    window.rootViewController = vc
+    return true
+  }
 
   func applicationDidEnterBackground(_ application: UIApplication) {
     try? MINQDatabase.compact()

@@ -21,12 +21,12 @@ struct AppRootViewModel: StateType {
   // MARK: - State
   let messageStream = PublishSubject<MessageType>()
   let signinTrigger = PublishSubject<Void>()
-  let resetTrigger = PublishSubject<Void>()
+  let resetTrigger = PublishSubject<Bool>()
 
   // MARK: - Action
   enum Action: ActionType {
     case show(message: MessageType)
-    case reset
+    case reset(force: Bool)
     case signin
   }
 
@@ -38,8 +38,8 @@ struct AppRootViewModel: StateType {
         state.messageStream.onNext(message)
       case .signin:
         state.signinTrigger.onNext(())
-      case .reset:
-        state.resetTrigger.onNext(())
+      case .reset(let force):
+        state.resetTrigger.onNext(force)
       }
     }
   }

@@ -1,6 +1,5 @@
 import Foundation
 import Moya
-import Result
 
 final class NetworkLoggingPlugin: PluginType {
 

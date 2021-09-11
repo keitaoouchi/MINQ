@@ -1,13 +1,21 @@
 input_dir: MINQ
 output_dir: Generated
 xcassets:
-  paths:
+  inputs:
   - Colors.xcassets
   - Images.xcassets
-  templateName: swift4
-  output: MINQAssets.swift
+  outputs:
+    templateName: swift5
+    output: MINQAssets.swift
 storyboards:
-  paths:
+  inputs:
   - Scene/
-  templateName: swift4
-  output: MINQStoryboards.swift
+  outputs:
+    templateName: scenes-swift5
+    output: MINQStoryboards.swift
+strings:
+  inputs:
+  - Localizable.strings
+  outputs:
+    templateName: structured-swift5
+    output: Strings.swift

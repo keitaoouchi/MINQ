@@ -1,7 +1,6 @@
 import Foundation
 import Moya
 import RxSwift
-import Result
 import FluxxKit
 
 final class AuthenticationPlugin: PluginType {

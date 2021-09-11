@@ -5,15 +5,15 @@ final class MenuViewController: UITabBarController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.loadTabs()
+    loadTabs()
 
-    self.tabBar.isTranslucent = false
-    self.tabBar.tintColor = Asset.Colors.green.color
+    tabBar.isTranslucent = false
+    tabBar.tintColor = Asset.Colors.green.color
 
-    self.delegate = self
+    delegate = self
 
     if let item = self.tabBar.items?.first {
-      self.tabBar(self.tabBar, didSelect: item)
+      tabBar(self.tabBar, didSelect: item)
     }
   }
 }
@@ -30,7 +30,7 @@ extension MenuViewController: UITabBarControllerDelegate {
 
   override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
 
-    guard let currentIndex = tabBar.items?.index(of: item) else { return }
+    guard let currentIndex = tabBar.items?.firstIndex(of: item) else { return }
     guard let vc = viewControllers?[currentIndex] else { return }
     guard let nav = vc as? UINavigationController else { return }
     if let top = nav.viewControllers.first as? Navigatable {
@@ -44,14 +44,14 @@ private extension MenuViewController {
   // 各VCのviewを叩いてloadViewが呼び出されるようにする
   func loadTabs() {
     let vcs = [
-      StoryboardScene.Home.initialScene.instantiate(),
-      StoryboardScene.Search.initialScene.instantiate(),
-      StoryboardScene.Settings.initialScene.instantiate()
-    ]
-
-    vcs.forEach { vc in
-      _ = vc.topViewController?.view
+      HomeViewController(),
+      SearchViewController(),
+      SettingsViewController()
+    ].map { UINavigationController(rootViewController: $0) }
+    vcs.forEach {
+      $0.view.backgroundColor = Asset.Colors.bg.color
+      _ = $0.topViewController?.view
     }
-    self.viewControllers = vcs
+    viewControllers = vcs
   }
 }

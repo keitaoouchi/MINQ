@@ -4,11 +4,11 @@ struct ItemQuery {
 
 extension ItemQuery {
 
-  enum QueryType {
+  enum QueryType: Hashable {
     case latest
     case stocks
     case mine
-    case tag(tag: Tag)
+    case tag(tag: ItemTag)
     case user(user: User)
     case search(string: String)
 
@@ -24,7 +24,7 @@ extension ItemQuery {
       default:
         if let identifier = string.split(separator: "_", maxSplits: 2, omittingEmptySubsequences: true).last?.lowercased() {
           if string.hasPrefix("tag_") {
-            return .tag(tag: Tag(name: identifier))
+            return .tag(tag: ItemTag(name: identifier))
           } else if string.hasPrefix("user_") {
             return .user(user: User(id: identifier))
           } else if string.hasPrefix("search_") {
@@ -41,17 +41,17 @@ extension ItemQuery {
     var title: String {
       switch self {
       case .latest:
-        return "新着記事"
+        return L10n.latestItems
       case .stocks:
-        return "ストック"
+        return L10n.stockedItems
       case .mine:
-        return "自分の投稿"
+        return L10n.myItems
       case .tag(let tag):
         return tag.name
       case .user(let user):
         return user.id
       case .search:
-        return "検索"
+        return L10n.search
       }
     }
 

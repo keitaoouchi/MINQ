@@ -5,18 +5,16 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
+			<key>Title</key>
+			<string>Licenses</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/Alamofire</string>
 			<key>Title</key>
 			<string>Alamofire</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>com.mono0926.LicensePlist/Crashlytics</string>
-			<key>Title</key>
-			<string>Crashlytics</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -30,17 +28,17 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/Fabric</string>
+			<string>com.mono0926.LicensePlist/Firebase</string>
 			<key>Title</key>
-			<string>Fabric</string>
+			<string>Firebase</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/Firebase</string>
+			<string>com.mono0926.LicensePlist/FirebaseABTesting</string>
 			<key>Title</key>
-			<string>Firebase</string>
+			<string>FirebaseABTesting</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -62,9 +60,25 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/FirebaseInstanceID</string>
+			<string>com.mono0926.LicensePlist/FirebaseCoreDiagnostics</string>
 			<key>Title</key>
-			<string>FirebaseInstanceID</string>
+			<string>FirebaseCoreDiagnostics</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>com.mono0926.LicensePlist/FirebaseCrashlytics</string>
+			<key>Title</key>
+			<string>FirebaseCrashlytics</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>com.mono0926.LicensePlist/FirebaseInstallations</string>
+			<key>Title</key>
+			<string>FirebaseInstallations</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -78,9 +92,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/FirebaseSwizzlingUtilities</string>
+			<string>com.mono0926.LicensePlist/FirebaseRemoteConfig</string>
 			<key>Title</key>
-			<string>FirebaseSwizzlingUtilities</string>
+			<string>FirebaseRemoteConfig</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -102,17 +116,25 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/GoogleToolboxForMac</string>
+			<string>com.mono0926.LicensePlist/GoogleAppMeasurement</string>
 			<key>Title</key>
-			<string>GoogleToolboxForMac</string>
+			<string>GoogleAppMeasurement</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/GTMSessionFetcher</string>
+			<string>com.mono0926.LicensePlist/GoogleDataTransport</string>
 			<key>Title</key>
-			<string>GTMSessionFetcher</string>
+			<string>GoogleDataTransport</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>com.mono0926.LicensePlist/GoogleUtilities</string>
+			<key>Title</key>
+			<string>GoogleUtilities</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -137,14 +159,6 @@
 			<string>com.mono0926.LicensePlist/IoniconsKit</string>
 			<key>Title</key>
 			<string>IoniconsKit</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>com.mono0926.LicensePlist/ios-snapshot-test-case</string>
-			<key>Title</key>
-			<string>ios-snapshot-test-case</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -198,33 +212,17 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/Nimble</string>
+			<string>com.mono0926.LicensePlist/Parchment</string>
 			<key>Title</key>
-			<string>Nimble</string>
+			<string>Parchment</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/PagingMenuController</string>
+			<string>com.mono0926.LicensePlist/PromisesObjC</string>
 			<key>Title</key>
-			<string>PagingMenuController</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>com.mono0926.LicensePlist/Protobuf</string>
-			<key>Title</key>
-			<string>Protobuf</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>com.mono0926.LicensePlist/Quick</string>
-			<key>Title</key>
-			<string>Quick</string>
+			<string>PromisesObjC</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -238,17 +236,17 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/realm-cocoa</string>
+			<string>com.mono0926.LicensePlist/Realm</string>
 			<key>Title</key>
-			<string>realm-cocoa</string>
+			<string>Realm</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/Result</string>
+			<string>com.mono0926.LicensePlist/RealmSwift</string>
 			<key>Title</key>
-			<string>Result</string>
+			<string>RealmSwift</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -273,6 +271,14 @@
 			<string>com.mono0926.LicensePlist/RxCocoa</string>
 			<key>Title</key>
 			<string>RxCocoa</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>com.mono0926.LicensePlist/RxRelay</string>
+			<key>Title</key>
+			<string>RxRelay</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
