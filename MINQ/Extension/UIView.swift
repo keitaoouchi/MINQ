@@ -5,13 +5,28 @@ extension UIView: MINQExtensible {}
 
 extension MINQExtension where Base: UIView {
 
-  func fill(with childView: UIView?, clean: Bool = false) {
+  func fill(with childView: UIView?, clean: Bool = false, adjustToSafeArea: Bool = false) {
     guard let childView = childView else { return }
     guard !self.base.subviews.contains(childView) else { return }
     if clean {
       base.subviews.forEach { $0.removeFromSuperview() }
     }
-    self.attach(childView)
+    if adjustToSafeArea {
+      adjust(childView)
+    } else {
+      attach(childView)
+    }
+  }
+
+  func adjust(_ childView: UIView) {
+    base.addSubview(childView)
+    childView.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      childView.topAnchor.constraint(equalTo: base.safeAreaLayoutGuide.topAnchor),
+      childView.leadingAnchor.constraint(equalTo: base.safeAreaLayoutGuide.leadingAnchor),
+      childView.trailingAnchor.constraint(equalTo: base.safeAreaLayoutGuide.trailingAnchor),
+      childView.bottomAnchor.constraint(equalTo: base.safeAreaLayoutGuide.bottomAnchor)
+    ])
   }
 
   func attach(_ childView: UIView, top: CGFloat? = nil, leading: CGFloat? = nil, trailing: CGFloat? = nil, bottom: CGFloat? = nil) {

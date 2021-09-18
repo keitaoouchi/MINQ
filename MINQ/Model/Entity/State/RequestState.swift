@@ -22,6 +22,8 @@ enum RequestState: Equatable {
       return true
     case (.done, .done):
       return true
+    case (.loaded(let lPage, let lIdentifiers), .loaded(let rPage, let rIdentifiers)):
+      return lPage == rPage && lIdentifiers == rIdentifiers
     default:
       return false
     }
@@ -48,8 +50,6 @@ enum PagingState: Equatable {
       return leftPage == rightPage
     case (.noPage, .noPage):
       return true
-    case (.fromCached, .fromCached):
-      return true
     default:
       return false
     }
@@ -57,13 +57,11 @@ enum PagingState: Equatable {
 
   case newPage(paging: Paging)
   case noPage
-  case fromCached
 
   var isPaginatable: Bool {
     switch self {
     case .newPage(let paging): return paging.page > 1
     case .noPage: return false
-    case .fromCached: return false
     }
   }
 

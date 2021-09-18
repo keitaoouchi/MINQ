@@ -1,6 +1,12 @@
 import Moya
 import UIKit
 
+enum APIError: Error {
+  case mappingError
+  case responseError
+  case notAuthorized
+}
+
 enum AuthRequiredType {
   case required
   case optional

@@ -3,6 +3,7 @@ import UIKit
 struct Markdown {
   struct CSS {}
   struct JS {}
+  struct Stylesheet {}
 }
 
 extension Markdown.CSS {
@@ -52,7 +53,23 @@ extension Markdown.JS {
     return try! String(contentsOf: url, encoding: String.Encoding.utf8)
   }
 
+  static var katex: String {
+    let path = Bundle.main.path(forResource: "markdown-it-katex.min", ofType: "js")!
+    let url = URL(fileURLWithPath: path)
+    return try! String(contentsOf: url, encoding: String.Encoding.utf8)
+  }
+
   static var plugins: [String] {
-    [footnote, sup, sub]
+    [footnote, sup, sub, katex]
+  }
+}
+
+extension Markdown.Stylesheet {
+  static var katex: URL {
+    URL(string: "https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/katex.css")!
+  }
+
+  static var stylesheets: [URL] {
+    [katex]
   }
 }

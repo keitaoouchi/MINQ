@@ -39,9 +39,9 @@ extension Style.Height {
 
   static let tagMark: CGFloat = {
     if UIDevice.current.userInterfaceIdiom == .pad {
-      return 18
-    } else {
       return 14
+    } else {
+      return 12
     }
   }()
 }
@@ -74,6 +74,14 @@ extension Style.Font {
 
   static let tag: UIFont = {
     .systemFont(ofSize: Style.Height.tagMark)
+  }()
+
+  static let stats: UIFont = {
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      return .systemFont(ofSize: 20, weight: .semibold)
+    } else {
+      return .systemFont(ofSize: 14, weight: .semibold)
+    }
   }()
 
   static let userButton: UIFont = {

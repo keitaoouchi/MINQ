@@ -27,5 +27,4 @@
 "clear cache" = "キャッシュ削除";
 "logout" = "ログアウト";
 "view history" = "閲覧履歴";
-"cache loaded" = "キャッシュを全て読み込みました";
 "load error" = "データを読み込めませんでした";

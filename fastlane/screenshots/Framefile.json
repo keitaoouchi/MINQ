@@ -1,0 +1,37 @@
+{
+  "default": {
+    "keyword": {
+      "fonts": [
+        {
+          "font": "./fonts/rounded-mplus-2m-regular.ttf"
+        }
+      ],
+      "color": "#059446"
+    },
+    "title": {
+      "fonts": [
+        {
+          "font": "./fonts/rounded-mplus-2m-regular.ttf"
+        }
+      ],
+      "color": "#059446"
+    },
+    "background": "./bg.jpg",
+    "padding": 50,
+    "frame": "SILVER"
+  },
+  "data": [
+    {
+      "filter": "Home"
+    },
+    {
+      "filter": "Detail"
+    },
+    {
+      "filter": "Channel"
+    },
+    {
+      "filter": "Search"
+    }
+  ]
+}

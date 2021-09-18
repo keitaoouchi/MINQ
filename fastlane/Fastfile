@@ -2,18 +2,6 @@ default_platform :ios
 
 ROOT_DIR = File.dirname(Dir.pwd)
 
-FABRIC_API_KEY = begin
-  File::open(File::join(ROOT_DIR, "config/fabric.key")).read().strip()
-rescue
-  ""
-end
-
-FABRIC_API_SECRET = begin
-  File::open(File::join(ROOT_DIR, "config/fabric.secret")).read().strip()
-rescue
-  ""
-end
-
 BASE_IDENTIFIER = "com.keita.oouchi.minQ"
 
 IDENTIFIERS = [
@@ -27,11 +15,6 @@ platform :ios do
   desc "セットアップ(Certifications, CocoaPods, Carthage)"
   lane :setup do |options|
     cocoapods(try_repo_update_on_error: true)
-  end
-
-  desc "Betaビルドの配布"
-  lane :beta do
-    deliver_beta("Developers", "MINQ-Debug")
   end
 
   desc "Releaseビルドを作成してAppStoreにアップロードする"
@@ -56,7 +39,7 @@ platform :ios do
     appstore(
       app_identifier: BASE_IDENTIFIER,
       skip_binary_upload: false,
-      skip_screenshots: false
+      skip_screenshots: true
     )
   end
 
@@ -67,84 +50,8 @@ platform :ios do
     match(app_identifier: "com.keita.oouchi.minQ", type: "appstore")
   end
 
-  desc "Devices一覧とProvisioningProfile更新"
-  lane :register_devices! do
-    register_devices(
-      devices_file: File::join(ROOT_DIR, "fastlane/devices.txt")
-    )
-    ["development", "adhoc"].each do |type|
-      match(
-        type: type,
-        force_for_new_devices: true,
-        readonly: false
-      )
-    end
-  end
-
   desc "ストア用スクショ作成"
   lane :screenshots do
     frameit(path: './fastlane/screenshots')
   end
-
-  desc "Testを実行"
-  lane :test do
-    scan(scheme: "MINQ-Debug", devices: ["iPhone X"])
-  end
-
-end
-
-def deliver_beta(groups, scheme, message = nil, clean = true, emails: nil)
-  ensure_git_status_clean
-  export_option = scheme_to_export_option(scheme)
-  UI.abort_with_message! "そんなスキーマありまへん！#{scheme}" unless export_option
-
-  UI.header "Fabric BetaへAppを配布します"
-  force = !message.nil?
-  message ||= UI.input("ビルドの説明文を入力してください")
-  until force || UI.confirm("説明文はこちらでよろしいですか?: '#{message}'") do
-    message = UI.input("ビルドの説明文を入力してください")
-  end
-  match(type: "adhoc", app_identifier: export_option.identifier)
-
-  gym(
-    clean: clean,
-    silent: true,
-    scheme: scheme,
-    configuration: export_option.configuration,
-    output_directory: File.join(ROOT_DIR, "build"),
-    export_method: export_option.export_method
-  )
-
-  crashlytics(
-    api_token: FABRIC_API_KEY,
-    build_secret: FABRIC_API_SECRET,
-    notes: build_release_notes(message),
-    groups: groups,
-    emails: emails
-  )
-
-  sync_dsym
-
-end
-
-def scheme_to_export_option(scheme)
-  dict = {
-    "MINQ-Debug": ExportOption.new("#{BASE_IDENTIFIER}.dev", "Debug", "ad-hoc"),
-    "MINQ-Release": ExportOption.new("#{BASE_IDENTIFIER}", "Release", "app-store")
-  }
-  dict[scheme.to_sym]
-end
-
-def sync_dsym
-  UI.header("dsymアップロード開始")
-
-  upload_symbols_to_crashlytics(
-    platform: "ios",
-    api_token: FABRIC_API_KEY
-  )
-end
-
-def build_release_notes(message)
-  header = "#{last_git_commit[:abbreviated_commit_hash]}@#{git_branch} by #{last_git_commit[:author]}"
-  "#{header}\n\n#{message}"
 end

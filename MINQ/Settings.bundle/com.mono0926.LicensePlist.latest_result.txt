@@ -100,7 +100,7 @@ version: 6.3.1
 
 name: MarkdownView, nameSpecified: 
 body: Copyright (c) 2017 k…
-version: 1.8.2
+version: 1.8.3
 
 name: Moya, nameSpecified: 
 body: The MIT License (MIT…
@@ -127,17 +127,17 @@ name: Realm, nameSpecified:
 body: TABLE OF CONTENTS
 
 1…
-version: 10.15.0
+version: 10.15.1
 
 name: RealmSwift, nameSpecified: 
 body: TABLE OF CONTENTS
 
 1…
-version: 10.15.0
+version: 10.15.1
 
 name: Reusable, nameSpecified: 
 body: The MIT License (MIT…
-version: 4.1.1
+version: 4.1.2
 
 name: RKDropdownAlert, nameSpecified: 
 body: Copyright (c) 2014 C…

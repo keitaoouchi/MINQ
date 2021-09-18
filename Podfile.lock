@@ -115,7 +115,7 @@ PODS:
   - KeychainAccess (4.2.2)
   - Keys (1.0.1)
   - Kingfisher (6.3.1)
-  - MarkdownView (1.8.2)
+  - MarkdownView (1.8.3)
   - Moya/Core (15.0.0):
     - Alamofire (~> 5.0)
   - Moya/RxSwift (15.0.0):
@@ -129,16 +129,16 @@ PODS:
   - Parchment (3.0.1)
   - PromisesObjC (2.0.0)
   - ReachabilitySwift (5.0.0)
-  - Realm (10.15.0):
-    - Realm/Headers (= 10.15.0)
-  - Realm/Headers (10.15.0)
-  - RealmSwift (10.15.0):
-    - Realm (= 10.15.0)
-  - Reusable (4.1.1):
-    - Reusable/Storyboard (= 4.1.1)
-    - Reusable/View (= 4.1.1)
-  - Reusable/Storyboard (4.1.1)
-  - Reusable/View (4.1.1)
+  - Realm (10.15.1):
+    - Realm/Headers (= 10.15.1)
+  - Realm/Headers (10.15.1)
+  - RealmSwift (10.15.1):
+    - Realm (= 10.15.1)
+  - Reusable (4.1.2):
+    - Reusable/Storyboard (= 4.1.2)
+    - Reusable/View (= 4.1.2)
+  - Reusable/Storyboard (4.1.2)
+  - Reusable/View (4.1.2)
   - RKDropdownAlert (0.3.0)
   - RxCocoa (6.2.0):
     - RxRelay (= 6.2.0)
@@ -258,15 +258,15 @@ SPEC CHECKSUMS:
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
   Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
   Kingfisher: 016c8b653a35add51dd34a3aba36b580041acc74
-  MarkdownView: cd0d3bda940f54a1da246559f90febf4927ce2a2
+  MarkdownView: 44a260beec01538e6cdbbce9c2f631b1f3634907
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   Parchment: 466a1cfb6151780db8acb4bbedc2d9c6bfa1e2ff
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  Realm: 13e805eb23d3eb8d8bb700d9cf9761f4b625b389
-  RealmSwift: 51b29bb4e19fe7322c8a599cf3494b8a08888ef1
-  Reusable: 53a9acf5c536f229b31b5865782414b508252ddb
+  Realm: fbcbde2620d51623cc5b18e28f5b165c39abef52
+  RealmSwift: e4bea8e42efad3d543aea23b56504069c6faaea2
+  Reusable: 6bae6a5e8aa793c9c441db0213c863a64bce9136
   RKDropdownAlert: f4b3364c251829ad439dc666836a1f2dad26f4c7
   RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
   RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
@@ -279,4 +279,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 29d2256321864f32baaaa3da4622c89c5f7c5bfd
 
-COCOAPODS: 1.11.0
+COCOAPODS: 1.11.2

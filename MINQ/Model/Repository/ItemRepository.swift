@@ -46,7 +46,7 @@ struct ItemRepository {
                                   paging: paging)
       }
     } else {
-      return Single.error(AuthError.notAuthorized)
+      return Single.error(APIError.notAuthorized)
     }
   }
 
@@ -57,7 +57,7 @@ struct ItemRepository {
                                 paging: paging)
       }
     } else {
-      return Single.error(AuthError.notAuthorized)
+      return Single.error(APIError.notAuthorized)
     }
   }
 

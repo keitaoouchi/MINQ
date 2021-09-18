@@ -1,3 +1,0 @@
-protocol Navigatable {
-  func activate()
-}

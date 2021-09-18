@@ -8,7 +8,7 @@ struct ItemTagRepository {
                             paging: paging)
       }
     } else {
-      return Single.error(AuthError.notAuthorized)
+      return Single.error(APIError.notAuthorized)
     }
   }
 

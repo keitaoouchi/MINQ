@@ -13,12 +13,11 @@ MINQ is under MIT license. See the [LICENSE](LICENSE) file for more info.
 ```bash
 bundle install
 bundle exec pod install
-carthage bootstrap --platform ios --cache-builds
-bundle exec gyro --model MINQ/MINQ.xcdatamodeld/MINQ.xcdatamodel --template swift4 --output ./Generated
-cp config/GoogleService-Info.plist.template config/GoogleService-Info.plist
-cp config/Secrets.h.template config/Secrets.h
-touch config/fabric.key
-touch config/fabric.secret
+# ここでQiitaのクライアントIDとシークレットを入力
+cp config/GoogleService-Info.plist.template config/GoogleService-Info.Debug.plist
+cp config/GoogleService-Info.plist.template config/GoogleService-Info.Release.plist
+mkdir Generated
+./Pods/SwiftGen/bin/swiftgen config run
 open MINQ.xcworkspace
 ```
 
@@ -28,20 +27,5 @@ open MINQ.xcworkspace
 config
 ├── GoogleService-Info.Debug.plist
 ├── GoogleService-Info.Release.plist
-├── GoogleService-Info.plist
-├── Secrets.h
-├── fabric.key
-└── fabric.secret
-```
-
-fabric.keyとfabric.secretはプレーンテキストにFabricのAPI KeyとBuild Secretを貼り付けたもの。
-Secrets.hはInfo.plistのプリプロセスに使われ、Info.plistのなかにFabricのAPI Keyをハードコードしないようにするために設置。
-
-```Objective-C
-#ifndef Secrets_pch
-#define Secrets_pch
-
-#define _FABRIC_API_KEY         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-#endif
+└── GoogleService-Info.plist
 ```

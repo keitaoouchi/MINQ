@@ -9,7 +9,7 @@ xcassets:
     output: MINQAssets.swift
 storyboards:
   inputs:
-  - Scene/
+  - Components/Scene/
   outputs:
     templateName: scenes-swift5
     output: MINQStoryboards.swift
